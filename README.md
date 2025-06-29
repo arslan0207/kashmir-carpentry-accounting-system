@@ -21,7 +21,7 @@ A comprehensive accounting management system built for Kashmir Carpentry LLC usi
 
 ## Installation
 
-### Windows
+### Windows Installation
 
 1. Clone or download the repository:
 ```bash
@@ -35,22 +35,64 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-3. Install dependencies:
+3. Install dependencies (in this exact order):
 ```bash
-# Install wheel first to ensure binary packages are used
+# Upgrade pip and install wheel first
+python -m pip install --upgrade pip
 pip install wheel
-pip install -r requirements.txt
+
+# Install dependencies with binary packages
+pip install --no-cache-dir --only-binary :all: -r requirements.txt
+
+# If the above command fails, try:
+pip install --no-cache-dir -r requirements.txt
 ```
 
 4. Initialize the database:
 ```bash
-python -m src.init_db
+# Using direct path
+python src\init_db.py
 ```
 
 5. Start the application:
 ```bash
-python -m uvicorn src.main:app --reload
+# Using direct path
+uvicorn src.main:app --reload
 ```
+
+Note: You may see some deprecation warnings about 'orm_mode' - these can be safely ignored as they don't affect functionality.
+
+Troubleshooting for Windows:
+
+1. If you see "module not found" errors:
+   - Make sure you're in the project root directory
+   - Verify that your virtual environment is activated
+   - Try reinstalling the package:
+     ```bash
+     pip install --no-cache-dir -r requirements.txt
+     ```
+
+2. If you get permission errors:
+   - Run Command Prompt or PowerShell as administrator
+   - Check if antivirus is blocking Python
+   - Make sure you have write permissions in the project directory
+
+3. Database Issues:
+   - Ensure SQLite is installed
+   - Check if the database file was created:
+     ```bash
+     dir kashmir_carpentry.db
+     ```
+   - If not, run the initialization again:
+     ```bash
+     python src\init_db.py
+     ```
+
+4. Port Already in Use:
+   - Change the port number:
+     ```bash
+     uvicorn src.main:app --reload --port 8001
+     ```
 
 ### macOS/Linux
 
