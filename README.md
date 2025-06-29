@@ -16,9 +16,43 @@ A comprehensive accounting management system built for Kashmir Carpentry LLC usi
 
 - Python 3.8 or higher
 - pip (Python package installer)
+- Virtual Environment
 - SQLite3
 
 ## Installation
+
+### Windows
+
+1. Clone or download the repository:
+```bash
+git clone <repository-url>
+cd kashmir-carpentry-system
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+# Install wheel first to ensure binary packages are used
+pip install wheel
+pip install -r requirements.txt
+```
+
+4. Initialize the database:
+```bash
+python -m src.init_db
+```
+
+5. Start the application:
+```bash
+python -m uvicorn src.main:app --reload
+```
+
+### macOS/Linux
 
 1. Clone the repository:
 ```bash
@@ -26,34 +60,30 @@ git clone <repository-url>
 cd kashmir-carpentry-system
 ```
 
-2. Create a virtual environment:
+2. Create and activate a virtual environment:
 ```bash
-python -m venv venv
-```
-
-3. Activate the virtual environment:
-- On Windows:
-```bash
-.\venv\Scripts\activate
-```
-- On macOS/Linux:
-```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
 
-4. Install dependencies:
+3. Install the package in development mode:
 ```bash
-pip install -r requirements.txt
+pip install -e .
 ```
 
-## Initial Setup
-
-1. Initialize the database and create an admin user:
+4. Initialize the database:
 ```bash
 python -m src.init_db
 ```
 
-This will create:
+5. Start the application:
+```bash
+python -m uvicorn src.main:app --reload
+```
+
+## Initial Setup
+
+The database initialization will create:
 - An admin user (username: admin, password: admin123)
 - Sample inventory items
 - Sample customer data
@@ -61,23 +91,19 @@ This will create:
 
 **Important**: Change the admin password after first login!
 
-## Running the Application
+## Accessing the Application
 
-1. Start the FastAPI server:
-```bash
-uvicorn src.main:app --reload
-```
+Once the application is running:
 
-2. Access the application:
-- API Documentation: http://localhost:8000/docs
-- Alternative API Documentation: http://localhost:8000/redoc
+1. Open your web browser and navigate to:
+   - API Documentation: http://127.0.0.1:8000/docs
+   - Alternative API Documentation: http://127.0.0.1:8000/redoc
 
-## Default Admin Credentials
+2. Click on the "Authorize" button in the documentation interface
 
-- Username: admin
-- Password: admin123
-
-**Important**: Change these credentials immediately after first login!
+3. Log in with the default admin credentials:
+   - Username: admin
+   - Password: admin123
 
 ## API Endpoints
 
@@ -108,26 +134,16 @@ uvicorn src.main:app --reload
 - POST /invoices/ - Generate new invoice
 - GET /invoices/ - List all invoices
 
-## Security
-
-The system implements:
-- JWT-based authentication
-- Password hashing using bcrypt
-- Role-based access control
-- Protected API endpoints
-
 ## Database
 
 The system uses SQLite as the default database. The database file (`kashmir_carpentry.db`) will be created automatically in the root directory when you first run the application.
 
-## Error Handling
+## Security Features
 
-The API implements comprehensive error handling:
-- 400: Bad Request
-- 401: Unauthorized
-- 403: Forbidden
-- 404: Not Found
-- 500: Internal Server Error
+- JWT-based authentication
+- Password hashing using bcrypt
+- Role-based access control
+- Protected API endpoints
 
 ## Best Practices
 
@@ -135,6 +151,36 @@ The API implements comprehensive error handling:
 2. Regularly backup the database file
 3. Keep the SECRET_KEY secure and change it in production
 4. Update dependencies regularly for security patches
+
+## Troubleshooting
+
+### Common Issues
+
+1. Module Not Found Errors:
+   - Ensure you're in the project root directory
+   - Verify the virtual environment is activated
+   - Confirm the package is installed with `pip install -e .`
+
+2. Database Errors:
+   - Check if SQLite is installed
+   - Ensure write permissions in the project directory
+   - Verify database file creation after initialization
+
+3. Port Already in Use:
+   - Change the port using `--port` flag:
+     ```bash
+     python -m uvicorn src.main:app --reload --port 8001
+     ```
+
+### Windows-Specific Issues
+
+1. If you see "python is not recognized":
+   - Add Python to your PATH environment variable
+   - Use `py` instead of `python` command
+
+2. Virtual Environment Issues:
+   - Use `python -m venv venv` instead of just `venv`
+   - Run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` in PowerShell if activation is blocked
 
 ## Production Deployment
 
